@@ -11,10 +11,18 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(512),
       allowNull: false
     },
+    name: {
+      type: DataTypes.STRING(512),
+      allowNull: false
+    },
     collectionId: {
       type: DataTypes.INTEGER,
-      allowNull: true
-    }
+      allowNull: true,
+      references: {
+        model: 'Collection',
+        key: 'id',
+      },
+    },
   }, {
     sequelize,
     tableName: 'item',

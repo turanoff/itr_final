@@ -17,6 +17,16 @@ module.exports = function(app) {
   
   app.dataSources.catsiteDs.automigrate('item', function(err) {
     if (err) throw err;
+
+    app.models.item.create([{
+      name: 'Katya',
+	  collectionId: 1,
+	  breed: 'syberian'
+    }], function(err, items) {
+      if (err) throw err;
+
+      console.log('Models created: \n', items);
+    });
   });
 	
   app.dataSources.catsiteDs.automigrate('Photo', function(err) {
