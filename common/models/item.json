@@ -12,7 +12,14 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "collection": {
+      "type": "belongsTo",
+      "model": "Collection",
+      "foreignKey": "",
+      "primaryKey": "id"
+	}
+  },
   "acls": [],
   "methods": {}
 }

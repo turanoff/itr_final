@@ -12,7 +12,6 @@ function initModels(sequelize) {
   var tag = _tag(sequelize, DataTypes);
   var user = _user(sequelize, DataTypes);
 
-
   return {
     collection,
     item,

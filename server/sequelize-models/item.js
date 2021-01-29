@@ -10,6 +10,10 @@ module.exports = function(sequelize, DataTypes) {
     breed: {
       type: DataTypes.STRING(512),
       allowNull: false
+    },
+    collectionId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
