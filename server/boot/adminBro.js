@@ -16,4 +16,5 @@ module.exports = function(app) {
   app.use(adminBro.options.rootPath, router);
 
   db.models.item.belongsTo(db.models.collection);
+  db.models.collection.belongsTo(db.models.user, {as: 'author'});
 };

@@ -16,7 +16,14 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "author": {
+      "type": "belongsTo",
+      "model": "User",
+      "foreignKey": "",
+      "primaryKey": "id"
+	}
+  },
   "acls": [],
   "methods": {}
 }

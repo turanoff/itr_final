@@ -14,6 +14,10 @@ module.exports = function(sequelize, DataTypes) {
     description: {
       type: DataTypes.STRING(512),
       allowNull: true
+    },
+    authorId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
