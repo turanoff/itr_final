@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('collection', {
+  const Collection = sequelize.define('collection', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -34,4 +34,8 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+  Collection.associate = function (models) {
+    Collection.belongsTo(models.user, {foreignKey: 'authorId'});
+  }
+  return Collection
 };

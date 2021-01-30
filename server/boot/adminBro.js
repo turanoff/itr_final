@@ -26,7 +26,4 @@ const adminBro = new AdminBro({
 module.exports = function(app) {
   const router = AdminBroExpress.buildRouter(adminBro);
   app.use(adminBro.options.rootPath, router);
-
-  db.models.item.belongsTo(db.models.collection);
-  db.models.collection.belongsTo(db.models.user, {as: 'author'});
 };
