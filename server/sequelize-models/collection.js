@@ -31,8 +31,7 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "id" },
         ]
-      },
-    ]
+      }]
   });
   Collection.associate = function (models) {
     Collection.belongsTo(models.user, {foreignKey: 'authorId'});

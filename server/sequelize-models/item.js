@@ -35,8 +35,7 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "id" },
         ]
-      },
-    ]
+      }]
   });
   item.associate = function (models) {
     item.belongsTo(models.collection);
