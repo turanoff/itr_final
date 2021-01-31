@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  const item = sequelize.define('item', {
+  return sequelize.define('item', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -17,12 +17,8 @@ module.exports = function(sequelize, DataTypes) {
     },
     collectionId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'collection',
-        key: 'id',
-      },
-    },
+      allowNull: true
+    }
   }, {
     sequelize,
     tableName: 'item',
@@ -35,10 +31,7 @@ module.exports = function(sequelize, DataTypes) {
         fields: [
           { name: "id" },
         ]
-      }]
+      },
+    ]
   });
-  item.associate = function (models) {
-    item.belongsTo(models.collection);
-  }
-  return item
 };

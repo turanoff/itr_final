@@ -19,3 +19,4 @@ node_modules
 npm-debug.log
 readme.txt
 datasources.json
+package-lock.json

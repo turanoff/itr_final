@@ -7,6 +7,7 @@
 
 const loopback = require('loopback');
 const boot = require('loopback-boot');
+const express = require('express');
 
 const app = module.exports = loopback();
 
@@ -22,6 +23,8 @@ app.start = function() {
     }
   });
 };
+
+app.use('/public', express.static('public'));
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
