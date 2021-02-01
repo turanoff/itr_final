@@ -18,6 +18,10 @@ module.exports = function(sequelize, DataTypes) {
     collectionId: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    photoId: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,

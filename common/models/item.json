@@ -22,6 +22,12 @@
       "model": "Collection",
       "foreignKey": "",
       "primaryKey": "id"
+	},
+	"photo": {
+	  "type": "belongsTo",
+      "model": "Photo",
+      "foreignKey": "",
+      "primaryKey": "id"
 	}
   },
   "acls": [],

@@ -27,7 +27,28 @@ const photoShowAction = {
     if (!data.record) {
       throw new _notFoundError.default([`Record of given id ("${request.params.recordId}") could not be found`].join('\n'), 'Action#handler');
     }
+    return {
+      record: data.record.toJSON(data.currentAdmin)
+    };
+  }
+};
 
+
+const itemShowPhoto = {
+  name: 'show',
+  isVisible: true,
+  actionType: 'record',
+  icon: 'Screen',
+  showInDrawer: false,
+
+  handler: async (request, response, data) => {
+	const photo = await db.models.photo.findOne({where: {id: data.record.params.photoId}});
+	var picsrc = '/public' + photo.picture;
+	data.record.params.show_photo = '<a href="' + picsrc + '"><img height=240 src="' + picsrc + '"></a>'
+
+    if (!data.record) {
+      throw new _notFoundError.default([`Record of given id ("${request.params.recordId}") could not be found`].join('\n'), 'Action#handler');
+    }
     return {
       record: data.record.toJSON(data.currentAdmin)
     };
@@ -48,9 +69,7 @@ const options = {
     })],
 	options: {
      properties: {
-	   'show_file': {
-	       type: 'richtext',
-	   }
+	   'show_file': {type: 'richtext'}
 	 },
 	 actions: {
          show: photoShowAction,
@@ -59,7 +78,22 @@ const options = {
 	 listProperties: ['id', 'picture'],
 	 editProperties: ['file', 'picture'],
 	}
-  }],
+  },
+  {
+    resource: db.models.item,
+	options: {
+     properties: {
+	   'show_photo': {type: 'richtext'}
+	 },
+	 actions: {
+         show: itemShowPhoto,
+     },
+	 showProperties: ['id', 'name', 'show_photo', 'collectionId', 'breed'],
+	 listProperties: ['id', 'name', 'show_photo', 'collectionId', 'breed'],
+	 editProperties: ['name', 'photoId', 'collectionId', 'breed'],
+	}
+  }
+  ],
   assets: {
 	  styles: ['/public/style.css'],
       scripts: [
@@ -82,5 +116,6 @@ module.exports = function(app) {
   app.use(adminBro.options.rootPath, router);
 
   db.models.item.belongsTo(db.models.collection);
+  db.models.item.belongsTo(db.models.photo);
   db.models.collection.belongsTo(db.models.user, {as: 'author'});
 };
