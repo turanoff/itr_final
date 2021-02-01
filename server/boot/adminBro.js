@@ -47,7 +47,7 @@ const itemShowPhoto = {
 		var picsrc = '/public' + photo.picture;
 		data.record.params.show_photo = '<a href="' + picsrc + '"><img height=240 src="' + picsrc + '"></a>'
 	} else {
-		data.record.params.show_photo = 'No photo';
+		data.record.params.show_photo = '<a href="http://localhost:3000/admin/resources/photo/actions/new">Add new photo</a>';
 	}
     if (!data.record) {
       throw new _notFoundError.default([`Record of given id ("${request.params.recordId}") could not be found`].join('\n'), 'Action#handler');
@@ -145,7 +145,7 @@ const options = {
         show: collectionShowAction,
       },
 	 listProperties: ['id', 'name', 'authorId'],
-	 editProperties: ['id', 'name', 'authorId', 'description'],
+	 editProperties: ['name', 'authorId', 'description'],
 	},
   },
   ],
