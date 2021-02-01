@@ -9,23 +9,57 @@ const uploadFeature = require('@admin-bro/upload')
 const { BaseProvider } = require('@admin-bro/upload')
 
 function uploadPathFunction (record, name) {
-	return name
+	return '/' + name
 };
 
+
+const photoShowAction = {
+  name: 'show',
+  isVisible: true,
+  actionType: 'record',
+  icon: 'Screen',
+  showInDrawer: false,
+
+  handler: async (request, response, data) => {
+	var picsrc = '/public' + data.record.params.picture;
+	data.record.params.show_file = '<a href="' + picsrc + '"><img height=240 src="' + picsrc + '"></a>'
+
+    if (!data.record) {
+      throw new _notFoundError.default([`Record of given id ("${request.params.recordId}") could not be found`].join('\n'), 'Action#handler');
+    }
+
+    return {
+      record: data.record.toJSON(data.currentAdmin)
+    };
+  }
+};
+
+
+
 const options = {
+  databases: [db],
+  rootPath: '/admin',
   resources: [{
     resource: db.models.photo,
-    options: {
-	  databases: [db],
-      rootPath: '/admin',
-    },
     features: [uploadFeature({
       provider: { local: { bucket: 'public' } },
 	  properties: {key: 'picture'},
 	  uploadPath: uploadPathFunction 
-    })]
-  },
-  ],
+    })],
+	options: {
+     properties: {
+	   'show_file': {
+	       type: 'richtext',
+	   }
+	 },
+	 actions: {
+         show: photoShowAction,
+     },
+	 showProperties: ['id', 'show_file', 'picture'],
+	 listProperties: ['id', 'picture'],
+	 editProperties: ['file', 'picture'],
+	}
+  }],
   assets: {
 	  styles: ['/public/style.css'],
       scripts: [
