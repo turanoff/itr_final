@@ -3,11 +3,14 @@ module.exports = function(app) {
     if (err) throw err;
 
     app.models.Collection.create([{
-      name: 'BlackCats'
+      name: 'BlackCats',
+	  authorId: 1,
     }, {
-      name: 'WhiteCats'
+      name: 'WhiteCats',
+	  authorId: 1,
     }, {
-      name: 'ColorCats'
+      name: 'ColorCats',
+	  authorId: 1,
     }], function(err, collections) {
       if (err) throw err;
 
@@ -22,7 +25,13 @@ module.exports = function(app) {
       name: 'Katya',
 	  collectionId: 1,
 	  breed: 'syberian'
-    }], function(err, items) {
+    },
+	{
+      name: 'Masya',
+	  collectionId: 1,
+	  breed: 'Belarusian'
+    },
+	], function(err, items) {
       if (err) throw err;
 
       console.log('Models created: \n', items);

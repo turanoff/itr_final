@@ -43,12 +43,49 @@ const itemShowPhoto = {
 
   handler: async (request, response, data) => {
 	const photo = await db.models.photo.findOne({where: {id: data.record.params.photoId}});
-	var picsrc = '/public' + photo.picture;
-	data.record.params.show_photo = '<a href="' + picsrc + '"><img height=240 src="' + picsrc + '"></a>'
-
+	if (photo) {
+		var picsrc = '/public' + photo.picture;
+		data.record.params.show_photo = '<a href="' + picsrc + '"><img height=240 src="' + picsrc + '"></a>'
+	} else {
+		data.record.params.show_photo = 'No photo';
+	}
     if (!data.record) {
       throw new _notFoundError.default([`Record of given id ("${request.params.recordId}") could not be found`].join('\n'), 'Action#handler');
     }
+    return {
+      record: data.record.toJSON(data.currentAdmin)
+    };
+  }
+};
+
+
+const collectionShowAction = {
+  name: 'show',
+  isVisible: true,
+  actionType: 'record',
+  icon: 'Screen',
+  showInDrawer: false,
+  
+  handler: async (request, response, data) => {
+    const items = await db.models.item.findAll({where: {collectionId: data.record.id()}});
+
+	if (items.length) {
+		// format found items
+		var i;
+		var formatted_items = [];
+		for (i = 0; i < items.length; i++) {
+		  var href = '<a href="/admin/resources/item/records/' + items[i].id + '/show">' + items[i].breed + ' ' + items[i].name + '</a>';
+		  formatted_items.push(href);
+		}
+		data.record.params.Items = formatted_items.join(', <br>');
+	} else {
+		data.record.params.Items = 'No items'
+	}
+    // copied from AdminBro source
+    if (!data.record) {
+      throw new _notFoundError.default([`Record of given id ("${request.params.recordId}") could not be found`].join('\n'), 'Action#handler');
+    }
+
     return {
       record: data.record.toJSON(data.currentAdmin)
     };
@@ -92,8 +129,27 @@ const options = {
 	 listProperties: ['id', 'name', 'show_photo', 'collectionId', 'breed'],
 	 editProperties: ['name', 'photoId', 'collectionId', 'breed'],
 	}
-  }
+  },
+  { 
+    resource: db.models.collection,
+    options: {
+	  properties: {
+	   'Items': {
+	       type: 'richtext',
+	   },
+	   'description': {
+	       type: 'textarea',
+ 	    },
+	  },
+	  actions: {
+        show: collectionShowAction,
+      },
+	 listProperties: ['id', 'name', 'authorId'],
+	 editProperties: ['id', 'name', 'authorId', 'description'],
+	},
+  },
   ],
+ 
   assets: {
 	  styles: ['/public/style.css'],
       scripts: [
@@ -107,6 +163,8 @@ const options = {
 
 // end 
 
+
+
 AdminBro.registerAdapter(AdminBroSequelize);
 
 const adminBro = new AdminBro(options);
@@ -117,5 +175,5 @@ module.exports = function(app) {
 
   db.models.item.belongsTo(db.models.collection);
   db.models.item.belongsTo(db.models.photo);
-  db.models.collection.belongsTo(db.models.user, {as: 'author'});
+  db.models.collection.belongsTo(db.models.user, {as: 'author', foreignKey: 'authorId'});
 };
